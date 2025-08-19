@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ειδήσεις Αυτοματισμού</title>
+  <style>
+    :root{
+      /* Ρύθμισε χρώματα & μεγέθη εδώ */
+      --bg:#0b1220;        /* φόντο */
+      --card:#111827;      /* κάρτα */
+      --ink:#e5e7eb;       /* κείμενο */
+      --muted:#9ca3af;     /* δευτερεύον */
+      --accent:#2563eb;    /* περίγραμμα hover/εστίαση */
+      --radius:20px;
+      --gap:18px;
+      --tile-min:260px;
+      --maxw:1200px;
+      --shadow:0 6px 28px rgba(0,0,0,.35);
+      --fs-base:clamp(18px, 2.2vw, 22px);
+      --fs-h1:clamp(22px, 3.2vw, 30px);
+      --fs-tile:1.05rem;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Noto Sans',sans-serif;
+      background:radial-gradient(1000px 600px at 50% -80px,#1f2937 10%,#0b1220 70%, #060a14 100%); color:var(--ink);
+      font-size:var(--fs-base);
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .wrap{width:100%; max-width:var(--maxw)}
+    header{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:18px;
+    }
+    h1{margin:0; font-weight:700; font-size:var(--fs-h1); letter-spacing:.2px}
+    .hint{color:var(--muted); font-size:.95rem}
+    .grid{
+      display:grid; gap:var(--gap);
+      grid-template-columns: repeat(auto-fit, minmax(var(--tile-min), 1fr));
+    }
+    .tile{
+      display:block; text-decoration:none; color:inherit; background:var(--card);
+      border:1px solid rgba(255,255,255,.06); border-radius:var(--radius);
+      padding:20px 22px; box-shadow:var(--shadow); position:relative; isolation:isolate;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      min-height:110px;
+    }
+    .tile:focus, .tile:hover{
+      outline:none; border-color:var(--accent); transform:translateY(-2px);
+      box-shadow:0 10px 32px rgba(37,99,235,.25), var(--shadow);
+    }
+    .tile .kicker{display:block; color:var(--muted); font-size:.9rem; margin-bottom:6px; letter-spacing:.3px}
+    .tile .title{display:block; font-weight:700; font-size:var(--fs-tile); line-height:1.2}
+    .tile .desc{display:block; color:var(--muted); margin-top:6px; font-size:.95rem}
+    .toolbar{display:flex; gap:10px; align-items:center}
+    .btn{
+      border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--ink);
+      padding:8px 12px; border-radius:12px; cursor:pointer; font:inherit;
+    }
+    .btn:focus{outline:2px solid var(--accent)}
+    .footer{margin-top:18px; color:var(--muted); font-size:.95rem}
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f3f4f6; --card:#ffffff; --ink:#111827; --muted:#6b7280; --shadow:0 8px 24px rgba(0,0,0,.08) }
+      body{ background: radial-gradient(1000px 600px at 50% -80px,#e5e7eb 10%,#f3f4f6 60%, #eef2f7 100%) }
+    }
+  </style>
+  <script>
+    // Μικρή βοήθεια για μέγεθος κειμένου (κρατά σε localStorage)
+    const setScale = s => {
+      document.documentElement.style.setProperty('--fs-base', s);
+      localStorage.setItem('fs-base', s);
+    };
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const saved = localStorage.getItem('fs-base');
+      if(saved) document.documentElement.style.setProperty('--fs-base', saved);
+      const inc = document.getElementById('fsPlus');
+      const dec = document.getElementById('fsMinus');
+      inc.addEventListener('click', ()=> setScale('clamp(20px, 2.6vw, 24px)'));
+      dec.addEventListener('click', ()=> setScale('clamp(17px, 2.0vw, 20px)'));
+      // Εστίαση στο πρώτο πλακίδιο για άμεση πλοήγηση με πληκτρολόγιο
+      const firstTile = document.querySelector('.tile'); if(firstTile) firstTile.focus();
+    });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Ειδήσεις Αυτοματισμού</h1>
+        <div class="hint">Επέλεξε πηγή. Μπορείς να αλλάζεις/προσθέτεις πλακίδια στον κώδικα.</div>
+      </div>
+      <div class="toolbar" aria-label="Ρυθμίσεις προβολής">
+        <button id="fsMinus" class="btn" title="Μικρότερο κείμενο">A−</button>
+        <button id="fsPlus"  class="btn" title="Μεγαλύτερο κείμενο">A+</button>
+      </div>
+    </header>
+
+    <main class="grid" role="navigation" aria-label="Πηγές ειδήσεων">
+      <!-- Κάθε πλακίδιο: άλλαξε href, τίτλο και περιγραφή -->
+      <a class="tile" href=" https://www.antenna.gr/news/" tabindex="0">
+        <span class="kicker">ANT1 News</span>
+        <span class="title">ANT1 News</span>
+        <span class="desc">ΑΝΤ1 - Νέα και ειδήσεις</span>
+      </a>
+
+	  <a class="tile" href="https://cyclades24.gr/blogview/syros/">
+        <span class="kicker">Cyclades 24</span>
+        <span class="title">Cyclades 24 - Syros</span>
+        <span class="desc">Ιστότοπος Κυκλάδες 24 - Σύρος</span>
+      </a>
+	 
+	  
+      <a class="tile" href="https://www.controleng.com">
+        <span class="kicker">Control</span>
+        <span class="title">Control Engineering</span>
+        <span class="desc">Άρθρα για PLC, motion, IIoT, βέλτιστες πρακτικές.</span>
+      </a>
+
+      <a class="tile" href="https://www.controlglobal.com">
+        <span class="kicker">Process</span>
+        <span class="title">Control Global</span>
+        <span class="desc">Process control, instrumentation, DCS/SCADA.</span>
+      </a>
+
+      <a class="tile" href="https://www.automation.com">
+        <span class="kicker">Manufacturing</span>
+        <span class="title">Automation.com</span>
+        <span class="desc">Ειδήσεις και αναλύσεις για αυτοματοποίηση παραγωγής.</span>
+      </a>
+
+      <a class="tile" href="https://spectrum.ieee.org/robotics">
+        <span class="kicker">Robotics</span>
+        <span class="title">IEEE Spectrum – Robotics</span>
+        <span class="desc">Ρομποτική, έρευνα και νέες τεχνολογίες.</span>
+      </a>
+
+      <a class="tile" href="https://www.control.com">
+        <span class="kicker">Community</span>
+        <span class="title">Control.com</span>
+        <span class="desc">Automation & Control Engineering news.</span>
+      </a>
+
+      <a class="tile" href="https://www.therobotreport.com">
+        <span class="kicker">Robotics</span>
+        <span class="title">The Robot Report</span>
+        <span class="desc">Αγορές ρομποτικής, startups, επενδύσεις.</span>
+      </a>
+
+      <a class="tile" href="https://roboticsandautomationnews.com">
+        <span class="kicker">Updates</span>
+        <span class="title">Robotics & Automation News</span>
+        <span class="desc">Σύντομες ενημερώσεις για ρομποτική & automation.</span>
+      </a>
+
+      <!-- ΠΑΡΑΔΕΙΓΜΑ για να προσθέσεις κι άλλο πλακίδιο:
+      <a class="tile" href="https://example.com">
+        <span class="kicker">Κατηγορία</span>
+        <span class="title">Όνομα Πηγής</span>
+        <span class="desc">Σύντομη περιγραφή.</span>
+      </a>
+      -->
+    </main>
+
+    <div class="footer">
+      Συμβουλή: Αν τρέχει σε kiosk, ρύθμισε allow-list στον Brave ώστε να επιτρέπονται μόνο τα παραπάνω domains.
+    </div>
+  </div>
+</body>
+</html>
